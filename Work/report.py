@@ -28,18 +28,33 @@ def read_prices(filename):
     f.close()
     return prices
 
+
+def make_report(portfolio, prices):
+    updated_portfolio = []
+
+    for holding in portfolio:
+        name = holding['name']
+        shares = holding['shares']
+        price = prices[name]
+        change = price - holding['price']
+        updated_portfolio.append((name, shares, price, change))
+
+    return updated_portfolio
+
+
+def print_report(report):
+    headers = ('Name', 'Shares', 'Price', 'Change')
+    separator = '----------'
+    print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
+    print(f'{separator:>10s} {separator:>10s} {separator:>10s} {separator:>10s}')
+
+    currency_sym = '$'
+    for name, shares, price, change in report:
+        money = f'{currency_sym}{price:0.2f}'
+        print(f'{name:>10s} {shares:>10d} {money:>10s} {change:>10.2f}')
+
+
 portfolio = read_portfolio('Data/portfolio.csv')
 prices = read_prices('Data/prices.csv')
-
-bought_price = 0.0
-curr_price = 0.0
-for holding in portfolio:
-    bought_price += holding['shares'] * holding['price']
-    curr_price += holding['shares'] * prices[holding['name']]
-
-print(f'Portfolio starting value {bought_price:0.2f}')
-print(f'Current portfolio value {(curr_price):0.2f}')
-if curr_price >= bought_price:
-    print(f'Gain +{(curr_price - bought_price):0.2f}')
-else:
-    print(f'Loss -{abs(curr_price - bought_price):0.2f}')
+report = make_report(portfolio, prices)
+print_report(report)
