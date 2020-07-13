@@ -11,10 +11,14 @@ def portfolio_cost(filename):
     headers = next(f)
 
     for line in f:
-        stock = line.split(',')
-        num_of_shares = int(stock[1])
-        stock_price = float(stock[2].strip())
-        cost += (num_of_shares * stock_price)
+        try:
+            stock = line.split(',')
+            num_of_shares = int(stock[1])
+            stock_price = float(stock[2].strip())
+            cost += (num_of_shares * stock_price)
+        except ValueError:
+            print('Bad line', line)
+            
     f.close()
     return cost
 
