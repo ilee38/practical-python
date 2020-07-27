@@ -2,31 +2,34 @@
 #
 # Exercise 1.27
 import sys
+import csv
 
 def portfolio_cost(filename):
-    cost = 0.0
+    total_cost = 0.0
     stock_price = 0.0
     num_of_shares = 0
     f = open(filename, 'rt')
-    headers = next(f)
+    lines = csv.reader(f)
+    headers = next(lines)
 
-    for line in f:
+    for lineno, line in enumerate(lines, start=1):
+        record = dict(zip(headers, line))
         try:
-            stock = line.split(',')
-            num_of_shares = int(stock[1])
-            stock_price = float(stock[2].strip())
-            cost += (num_of_shares * stock_price)
+            nshares = int(record['shares'])
+            price = float(record['price'])
+            total_cost += nshares * price
+        # This catches errors in int() and float() conversions above
         except ValueError:
-            print('Bad line', line)
+            print(f'Row {lineno}: Bad row: {line}')
             
     f.close()
-    return cost
+    return total_cost
 
 
 if len(sys.argv) == 2:
     filename = sys.argv[1]
 else:
-    filename = 'Data/portfolio.csv'
+    filename = 'Data/portfoliodate.csv'
 
 cost = portfolio_cost(filename)
 print('Total cost:', cost)
