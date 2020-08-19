@@ -25,6 +25,7 @@ class TextTableFormatter(TableFormatter):
 
     def row(self, rowdata):
         for d in rowdata:
+            d = str(d)
             print(f'{d:>10s}', end=' ')
         print() 
 
@@ -56,6 +57,10 @@ class HTMLTableFormatter(TableFormatter):
         print(f'<tr><td>{single_row}</td></tr>')
 
 
+class FormatError(Exception):
+    pass
+
+
 def create_formatter(name):
     if name == 'txt':
         return TextTableFormatter()
@@ -64,4 +69,19 @@ def create_formatter(name):
     elif name == 'html':
         return HTMLTableFormatter()
     else:
-        raise RuntimeError(f'Unknown format {fmt}')
+        raise FormatError(f'Unknown table format {name}')
+
+
+def print_table(table_data, attr, formatter):
+    formatter.headings(attr)
+    for item in table_data:
+        rowdata = [ getattr(item, a) for a in attr ]
+        formatter.row(rowdata)
+
+
+
+
+
+
+
+
