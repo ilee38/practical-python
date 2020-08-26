@@ -7,21 +7,22 @@ import sys
 import report
 
 def portfolio_cost(filename):
-    total_cost = 0.0
-    stock_price = 0.0
-    num_of_shares = 0
-    records = report.read_portfolio(filename) 
+#    total_cost = 0.0
+#    stock_price = 0.0
+#    num_of_shares = 0
+    portfolio = report.read_portfolio(filename) 
 
-    for lineno, record in enumerate(records, start=1):
-        try:
-            nshares = int(record.shares)
-            price = float(record.price)
-            total_cost += nshares * price
-        # This catches errors in int() and float() conversions above
-        except ValueError:
-            print(f'Row {lineno}: Bad row: {line}')
+#    for lineno, record in enumerate(records, start=1):
+#        try:
+#            nshares = int(record.shares)
+#            price = float(record.price)
+#            total_cost += nshares * price
+#        # This catches errors in int() and float() conversions above
+#        except ValueError:
+#            print(f'Row {lineno}: Bad row: {line}')
             
-    return total_cost
+    return portfolio.total_cost
+
 
 def main(argv):
     if len(argv) == 2:
