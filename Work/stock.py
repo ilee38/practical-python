@@ -1,6 +1,9 @@
-class Stock:
+from typedproperty import typedproperty
 
-    __slots__ = 'name', '_shares', 'price'
+class Stock:
+    name = typedproperty('name', str)
+    shares = typedproperty('shares', int)
+    price = typedproperty('price', float)
 
     def __init__(self, name, shares, price):
         self.name = name

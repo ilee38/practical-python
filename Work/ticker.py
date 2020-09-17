@@ -21,9 +21,11 @@ def make_dicts(rows, headers):
 
 
 def filter_symbols(rows, names):
-    for row in rows:
-        if row['name'] in names:
-            yield row
+    rows = (row for row in rows if row['name'] in names)
+    return rows
+#    for row in rows:
+#        if row['name'] in names:
+#            yield row
 
 
 def parse_stock_data(lines):
